@@ -32,6 +32,48 @@ def unzip_file(zip_path, extract_to='.'):
 #unzip_file('H1.zip', extract_to='H1_data')
 
 
+
+
+def process_daily_data(input_folder, output_folder):
+    """
+    Обрабатывает CSV-файлы из указанной входной папки, преобразует данные в дневные интервалы
+    и сохраняет результаты в выходную папку.
+    
+    Параметры:
+    input_folder (str): Путь к папке с исходными CSV-файлами
+    output_folder (str): Путь к папке для сохранения обработанных данных
+    """
+    # Создаем выходную папку, если она не существует
+    os.makedirs(output_folder, exist_ok=True)
+    
+    # Обрабатываем каждый CSV-файл во входной папке
+    for file in os.listdir(input_folder):
+        if file.endswith(".csv"):
+            # Читаем файл
+            df = pd.read_csv(os.path.join(input_folder, file))
+            
+            # Преобразуем колонку 'begin' в datetime
+            df['begin'] = pd.to_datetime(df['begin'])
+            
+            # Создаем колонку с датой (без времени)
+            df['date'] = df['begin'].dt.date
+            
+            # Группируем по дате и агрегируем данные
+            daily = df.groupby('date').agg({
+                'open': 'first',
+                'close': 'last',
+                'high': 'max',
+                'low': 'min',
+                'value': 'sum',
+                'volume': 'sum',
+                'ticker': 'first'
+            }).reset_index()
+            
+            # Сохраняем результат
+            output_path = os.path.join(output_folder, file)
+            daily.to_csv(output_path, index=False, encoding='utf-8')
+
+
 def process_folder_data(folder_path, start_date='2010-01-01', threshold=0.01):
     """
     Обрабатывает все CSV-файлы в указанной папке, объединяет данные,
@@ -85,21 +127,3 @@ result = process_folder_data(
 
 # Просмотр первых 5 строк
 print(result.head())"""
-
-# Вспомогательные функции
-
-def softmax(x):
-    """Вычисляет softmax для входного массива x."""
-    # ...existing code...
-
-def normalize(x):
-    """Нормализует входной массив x так, чтобы сумма элементов была равна 1."""
-    # ...existing code...
-
-def sharpe_ratio(returns, risk_free_rate=0):
-    """Вычисляет коэффициент Шарпа для заданных доходностей."""
-    # ...existing code...
-
-def max_drawdown(returns):
-    """Вычисляет максимальную просадку для заданных доходностей."""
-    # ...existing code...
