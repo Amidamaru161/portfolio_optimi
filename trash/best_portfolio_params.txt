@@ -1,0 +1,15 @@
+Best parameters:
+  l1_coef: 1.132971953693404e-05
+  l2_coef: 1.4258748847106347e-05
+  holding_period: 6
+  fitting_period: 95
+
+Best average drawdown: 0.17341711077835087
+
+Performance metrics:
+  Mean return: 0.00027077962057540244
+  Max drawdown: 0.4590395094594891
+  Average drawdown: 0.17341711077835087
+  Sharpe ratio: 0.025618626473662275
+  Sortino ratio: 0.03628391041866885
+  Calmar ratio: 0.0005898830383777654
