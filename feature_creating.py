@@ -5,7 +5,7 @@ from sklearn.base import BaseEstimator
 from sklearn.base import TransformerMixin
 from sklearn.preprocessing import MaxAbsScaler
 from stockstats import StockDataFrame as Sdf
-from config import INDICATORS
+from utils.ml.config import INDICATORS
 
 
 class GroupByScaler(BaseEstimator, TransformerMixin):
